@@ -11,9 +11,9 @@ from oauth2client.service_account import ServiceAccountCredentials
 logging.basicConfig(level=logging.INFO)
 
 # Загрузка переменных из окружения
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-SPREADSHEET_ID = "1hYCwwssr9aTxSUs4atU2IjnaNKaGVoj5UhjvcY2I0xA"
+BOT_TOKEN =8370190390:AAEPwpoUoGeXwEgyiNSW3R471QK20peLVF0
+OPENROUTER_API_KEY =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
+SPREADSHEET_ID ="1hYCwwssr9aTxSUs4atU2IjnaNKaGVoj5UhjvcY2I0xA"
 
 # Настройка Google Таблицы
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
