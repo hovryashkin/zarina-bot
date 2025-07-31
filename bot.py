@@ -12,9 +12,9 @@ BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 # Google Sheets
-
 gc = gspread.service_account(filename="/etc/secrets/credentials.json")
 sheet = gc.open_by_key(os.getenv("GOOGLE_SHEET_ID")).sheet1
+
 # Временное хранилище вопросов
 pending_questions = {}
 
