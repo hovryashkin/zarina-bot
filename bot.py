@@ -18,7 +18,10 @@ SPREADSHEET_ID = os.getenv("SPREADSHEET_ID = "1hYCwwssr9aTxSUs4atU2IjnaNKaGVoj5U
 # Настройка Google Таблицы
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 creds_path = '/etc/secrets/credentials.json'  # путь на Render
-creds = ServiceAccountCredentials.from_json_keyfile_name(creds_path, scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name(
+    '/etc/secrets/credentials.json',
+    ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+)
 client = gspread.authorize(creds)
 sheet = client.open_by_key(SPREADSHEET_ID).sheet1
 
