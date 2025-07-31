@@ -1,5 +1,1 @@
-python-telegram-bot==20.7
-openai
-gspread
-oauth2client
-python-dotenv
+python-telegram-bot==20.8\ngspread\nhttpx\npython-dotenv
