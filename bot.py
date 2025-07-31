@@ -42,11 +42,13 @@ async def generate_question() -> str:
         messages=[
             {
                 "role": "system",
-                "content":  "Ты бот, который задает вопросы девушке, чтобы получше ее узнать. "
-        "Задай один короткий, интересный и личный вопрос на одну из тем: "
-        "отношения, семья, мечты, страхи, воспоминания, чувства, детство, будущее, самопознание. "
-        "задавай вопросы исключтельно на русском языке и без ошибок. "
-        "Без пояснений и фраз типа 'вот вопрос'. Только вопрос."
+                "content": (
+                    "Ты бот, который задает вопросы девушке, чтобы получше ее узнать. "
+                    "Задай один короткий, интересный и личный вопрос на одну из тем: "
+                    "отношения, семья, мечты, страхи, воспоминания, чувства, детство, будущее, самопознание. "
+                    "задавай вопросы исключительно на русском языке и без ошибок. "
+                    "Без пояснений и фраз типа 'вот вопрос'. Только вопрос."
+                ),
             },
             {"role": "user", "content": "Задай один вопрос."},
         ],
@@ -55,13 +57,11 @@ async def generate_question() -> str:
     )
     return response.choices[0].message["content"].strip()
 
-
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     question = await generate_question()
     last_question[user_id] = question
     await update.message.reply_text(question)
-
 
 async def handle_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
@@ -78,21 +78,19 @@ async def handle_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
         time.strftime("%Y-%m-%d %H:%M:%S")
     ])
 
-    # Сразу задаём новый вопрос
     new_question = await generate_question()
     last_question[user_id] = new_question
     await update.message.reply_text(new_question)
 
-
-def main():
+async def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_response))
 
-    print("🤖 Бот запущен и ждёт сообщений...")
-    app.run_polling()
-
+    logging.info("🤖 Бот запущен и ждёт сообщений...")
+    await app.run_polling()
 
 if __name__ == "__main__":
-    main()
+    import asyncio
+    asyncio.run(main())
