@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO)
 # Загрузка переменных из окружения
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-SPREADSHEET_ID = os.getenv("SPREADSHEET_ID = "1hYCwwssr9aTxSUs4atU2IjnaNKaGVoj5UhjvcY2I0xA"")
+SPREADSHEET_ID = "1hYCwwssr9aTxSUs4atU2IjnaNKaGVoj5UhjvcY2I0xA"
 
 # Настройка Google Таблицы
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
