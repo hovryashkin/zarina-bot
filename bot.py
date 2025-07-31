@@ -7,6 +7,10 @@ from openai import OpenAI
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
+# Загружаем .env (если локально)
+from dotenv import load_dotenv
+load_dotenv()
+
 # Настройка логгирования
 logging.basicConfig(level=logging.INFO)
 
@@ -14,6 +18,14 @@ logging.basicConfig(level=logging.INFO)
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 SPREADSHEET_ID = os.getenv("SPREADSHEET_ID")
+
+# Проверка загрузки переменных
+if not BOT_TOKEN:
+    print("❌ BOT_TOKEN не загружен.")
+if not OPENROUTER_API_KEY:
+    print("❌ OPENROUTER_API_KEY не загружен.")
+if not SPREADSHEET_ID:
+    print("❌ SPREADSHEET_ID не загружен.")
 
 # Авторизация Google Sheets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
@@ -37,25 +49,25 @@ async def generate_question():
     )
     return response.choices[0].message.content.strip()
 
-# Обработка команды /start
+# Команда /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     question = await generate_question()
     await update.message.reply_text(question)
 
-# Обработка входящих сообщений (ответов Зарины)
+# Обработка сообщений
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     answer = update.message.text
-    question = "Последний вопрос неизвестен"
+    question = "Последний вопрос неизвестен"  # Можно улучшить, сохраняя вопрос в context
 
-    # Сохраняем в Google Таблицу
+    # Запись в таблицу
     sheet.append_row([user.id, user.username, question, answer])
 
-    # Присылаем следующий вопрос
+    # Новый вопрос
     next_question = await generate_question()
     await update.message.reply_text(next_question)
 
-# Основной запуск
+# Запуск
 async def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
