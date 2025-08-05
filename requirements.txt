@@ -3,3 +3,4 @@ gspread
 oauth2client
 openai
 python-dotenv
+nest_asyncio
