@@ -1,35 +1,28 @@
-import asyncio
 import os
+import asyncio
 from dotenv import load_dotenv
 from telegram import Update
-from telegram.ext import (
-    ApplicationBuilder,
-    ContextTypes,
-    MessageHandler,
-    filters
-)
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 
-# Загружаем переменные из .env
 load_dotenv()
+
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
-# Обработчик входящих сообщений
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_message = update.message.text
-    await update.message.reply_text(f"Ты написал: {user_message}")
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Привет, Зарина!")
 
-# Основная функция
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_text = update.message.text
+    await update.message.reply_text(f"Ты сказала: {user_text}")
+
 async def main():
-    # Создание приложения с токеном
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
-    # Добавление обработчика
+    app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
-    # Запуск бота
     print("Бот запущен")
     await app.run_polling()
 
-# Запуск
-if __name__ == '__main__':
+if __name__ == "__main__":
     asyncio.run(main())
